@@ -1,22 +1,28 @@
 package com.treino.mercadolivre.controller;
 
 import com.treino.mercadolivre.usuario.*;
+import com.treino.mercadolivre.validation.annotations.ValidatorUniqueValue;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
-import org.springframework.context.annotation.Import;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.Assert;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.*;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class UsuarioControllerTest {
     @InjectMocks
     private UsuarioController usuarioController;
@@ -24,18 +30,22 @@ public class UsuarioControllerTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
-    private ValidatorFactory validatorFactory;
-    private  Validator validator;
+    @PersistenceContext
+    private EntityManager em;
+    @Autowired
+    private ConfigurableApplicationContext applicationContext;
+    private LocalValidatorFactoryBean validator;
 
     @BeforeEach
-    public void createValidator() {
-        validatorFactory = Validation.buildDefaultValidatorFactory();
-        validator = validatorFactory.getValidator();
-    }
+    private void setUpEach() {
+        SpringConstraintValidatorFactory springConstraintValidatorFactory =
+                new SpringConstraintValidatorFactory(
+                        applicationContext.getAutowireCapableBeanFactory());
 
-    @AfterEach
-    public void close() {
-        validatorFactory.close();
+        validator = new LocalValidatorFactoryBean();
+        validator.setConstraintValidatorFactory(springConstraintValidatorFactory);
+        validator.setApplicationContext(applicationContext);
+        validator.afterPropertiesSet();
     }
 
     @Test
@@ -51,13 +61,16 @@ public class UsuarioControllerTest {
     @Test
     @DisplayName("Não salva usuario no banco de dados se estiver algum erro de validação!")
     void dontSaveUserOnDatabaseWhenUnsucessful(){
-        UsuarioBuilder user = new UsuarioBuilder()
-                .setLogin("samuelgmail.com")
-                .setSenha("");
-        UsuarioRequest usuarioRequest = new UsuarioRequest(user.getLogin(), user.getSenha());
+        UsuarioRequest usuarioRequest = new UsuarioRequest("samuelgmail.com","");
 
         Set<ConstraintViolation<UsuarioRequest>> constraintViolations = validator.validate(usuarioRequest);
 
-        Assertions.assertFalse(constraintViolations.isEmpty());
+        Usuario user = usuarioRequest.toUsuario();
+        if(constraintViolations.isEmpty())
+            usuarioRepository.save(user);
+
+        List<Usuario> lista = usuarioRepository.findAll();
+
+        Assertions.assertTrue(lista.isEmpty());
     }
 }

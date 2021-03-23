@@ -7,17 +7,9 @@ public class UsuarioBuilder {
     private String senha;
     private LocalDateTime instanteCadastro = LocalDateTime.now().withNano(0);
 
-    public String getLogin() {
-        return login;
-    }
-
     public UsuarioBuilder setLogin(String login) {
         this.login = login;
         return this;
-    }
-
-    public String getSenha() {
-        return senha;
     }
 
     public UsuarioBuilder setSenha(String senha) {
@@ -25,12 +17,15 @@ public class UsuarioBuilder {
         return this;
     }
 
-    public LocalDateTime getInstanteCadastro() {
-        return instanteCadastro;
+    public String getLogin() {
+        return login;
     }
 
-    public UsuarioBuilder setInstanteCadastro(LocalDateTime instanteCadastro) {
-        this.instanteCadastro = instanteCadastro;
-        return this;
+    public String getSenha() {
+        return senha;
+    }
+
+    public Usuario build(){
+        return new Usuario(login,new Senha(senha));
     }
 }

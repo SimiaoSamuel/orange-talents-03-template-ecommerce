@@ -1,5 +1,7 @@
 package com.treino.mercadolivre.usuario;
 
+import com.treino.mercadolivre.validation.annotations.UniqueValue;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -7,6 +9,7 @@ import javax.validation.constraints.Size;
 public class UsuarioRequest {
     @NotBlank(message = "Não pode deixar o email em branco")
     @Email(message = "Email inválido")
+    @UniqueValue(fieldName = "login", klass = Usuario.class)
     private String login;
 
     @NotBlank(message = "Não pode deixar a senha em branco")
