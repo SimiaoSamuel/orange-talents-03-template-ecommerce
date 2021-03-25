@@ -1,14 +1,9 @@
 package com.treino.mercadolivre.categoria;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.treino.mercadolivre.validation.annotations.ExistInDatabase;
 import com.treino.mercadolivre.validation.annotations.UniqueValue;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class CategoriaRequest {
     @NotBlank @UniqueValue(fieldName = "nome", klass = Categoria.class)

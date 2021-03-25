@@ -1,11 +1,16 @@
 package com.treino.mercadolivre.usuario;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,6 +24,14 @@ public class Usuario {
     @Column(nullable = false)
     private LocalDateTime instanteCadastro = LocalDateTime.now().withNano(0);
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
     /**
      *
      * @param login email do usuario
@@ -27,5 +40,44 @@ public class Usuario {
     public Usuario(String login, Senha senhaLimpa) {
         this.login = login;
         this.senha = senhaLimpa.hash();
+    }
+
+    @Deprecated
+    public Usuario() {
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

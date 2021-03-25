@@ -9,7 +9,6 @@ public class CategoriaResponse {
 
     private String nome;
 
-
     private List<String> categorias = new ArrayList<>();
 
     public List<String> getCategorias() {
@@ -24,10 +23,9 @@ public class CategoriaResponse {
         return nome;
     }
 
-
     public CategoriaResponse(Categoria categoria) {
         Categoria categoriaSuporte = categoria.getCategoriaAssociada();
-        while(categoriaSuporte != null){
+        while (categoriaSuporte != null) {
             categorias.add(categoriaSuporte.getNome());
             categoriaSuporte = categoriaSuporte.getCategoriaAssociada();
         }
