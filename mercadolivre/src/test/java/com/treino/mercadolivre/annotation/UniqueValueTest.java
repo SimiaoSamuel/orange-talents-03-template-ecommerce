@@ -1,5 +1,7 @@
 package com.treino.mercadolivre.annotation;
 
+import com.treino.mercadolivre.caracteristica.Caracteristica;
+import com.treino.mercadolivre.caracteristica.CaracteristicaRequest;
 import com.treino.mercadolivre.usuario.Senha;
 import com.treino.mercadolivre.usuario.Usuario;
 import com.treino.mercadolivre.usuario.UsuarioRequest;
@@ -18,8 +20,7 @@ import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class UniqueValueTest {
@@ -67,5 +68,18 @@ public class UniqueValueTest {
         Set<ConstraintViolation<UsuarioRequest>> errors = validator.validate(usuarioRequest);
 
         assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Não deve deixar passar uma lista de categorias que tenha caracteristicas iguais ou que já existem")
+    public void deveDeixarPassarCaracteristicasRepetidas() {
+        Caracteristica caracteristica = new Caracteristica("nome", "desc");
+        em.persist(caracteristica);
+
+        CaracteristicaRequest caracteristicaRequest = new CaracteristicaRequest("nome", "descrição");
+        Set<ConstraintViolation<CaracteristicaRequest>> errors = validator.validate(caracteristicaRequest);
+
+        assertFalse(errors.isEmpty());
     }
 }

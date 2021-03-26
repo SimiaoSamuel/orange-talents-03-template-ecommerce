@@ -3,9 +3,11 @@ package com.treino.mercadolivre.validation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -15,6 +17,11 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ValidationHandler extends ResponseEntityExceptionHandler {
+
+    @InitBinder
+    private void activateDirectFieldAccess(DataBinder dataBinder) {
+        dataBinder.initDirectFieldAccess();
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -32,4 +39,6 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
     }
+
+
 }

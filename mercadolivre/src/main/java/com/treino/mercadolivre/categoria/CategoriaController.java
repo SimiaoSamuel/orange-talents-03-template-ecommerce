@@ -1,6 +1,5 @@
 package com.treino.mercadolivre.categoria;
 
-import com.treino.mercadolivre.usuario.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
