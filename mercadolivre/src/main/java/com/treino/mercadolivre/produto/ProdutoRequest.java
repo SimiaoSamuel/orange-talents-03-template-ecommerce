@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,8 @@ public class ProdutoRequest {
     private Integer quantidade;
 
     @Valid
-    private List<CaracteristicaRequest> caracteristicas;
+    @Size(min = 1, message = "Seu produto precisa ter pelo menos uma caracteristica!")
+    private HashSet<CaracteristicaRequest> caracteristicas;
 
     @NotBlank
     @Size(max = 1000)
@@ -40,7 +42,7 @@ public class ProdutoRequest {
     private Integer categoriaId;
 
     public ProdutoRequest(@NotBlank String nome, @NotNull @Min(1) BigDecimal valor,
-                          @NotNull @Min(1) Integer quantidade, List<CaracteristicaRequest> caracteristicas,
+                          @NotNull @Min(1) Integer quantidade, HashSet<CaracteristicaRequest> caracteristicas,
                           @NotBlank @Size(max = 1000) String descricao, @NotNull Integer categoriaId) {
         this.nome = nome;
         this.valor = valor;

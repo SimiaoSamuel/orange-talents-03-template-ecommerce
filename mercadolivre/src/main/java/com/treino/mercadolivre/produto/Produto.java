@@ -2,6 +2,7 @@ package com.treino.mercadolivre.produto;
 
 import com.treino.mercadolivre.caracteristica.Caracteristica;
 import com.treino.mercadolivre.categoria.Categoria;
+import com.treino.mercadolivre.foto.Foto;
 import com.treino.mercadolivre.usuario.Usuario;
 
 import javax.persistence.*;
@@ -39,6 +40,13 @@ public class Produto {
 
     @Column(nullable = false)
     private LocalDateTime instanteCadastro = LocalDateTime.now().withNano(0);
+
+    @OneToMany
+    private List<Foto> fotos;
+
+    public void setFotos(List<Foto> fotos) {
+        this.fotos.addAll(fotos);
+    }
 
     public Integer getId() {
         return id;
