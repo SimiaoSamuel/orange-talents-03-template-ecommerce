@@ -47,6 +47,7 @@ public class FotoController {
         List<Foto> foto = fotoRequest.toListOfUri(uris);
 
         fotoRepository.saveAll(foto);
+
         produto.setFotos(foto);
         produtoRepository.save(produto);
 
