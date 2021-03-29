@@ -8,14 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos/{id}/fotos")
+@Validated
 public class FotoController {
     private final ProdutoRepository produtoRepository;
     private final FotoRepository fotoRepository;
@@ -29,9 +34,9 @@ public class FotoController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<FotoResponse>> insereFotos(@PathVariable Integer id, @AuthenticationPrincipal Usuario usuario,
-                                       @RequestParam(value = "photo") List<MultipartFile> files){
-
+    public ResponseEntity<List<FotoResponse>> insereFotos(@PathVariable Integer id,
+                                                          @AuthenticationPrincipal Usuario usuario,
+                                                          @RequestParam(value = "photo") @Size(min = 1) List<MultipartFile> files){
         FotoRequest fotoRequest = new FotoRequest(files);
         Optional<Produto> produtoOptional = produtoRepository.findById(id);
 

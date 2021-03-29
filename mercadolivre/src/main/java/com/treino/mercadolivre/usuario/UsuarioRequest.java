@@ -1,7 +1,6 @@
 package com.treino.mercadolivre.usuario;
 
 import com.treino.mercadolivre.validation.annotations.UniqueValue;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,9 +23,5 @@ public class UsuarioRequest {
 
     public Usuario toUsuario() {
         return new Usuario(login,new Senha(senha));
-    }
-
-    public UsernamePasswordAuthenticationToken toAuthToken(){
-        return new UsernamePasswordAuthenticationToken(login,senha);
     }
 }

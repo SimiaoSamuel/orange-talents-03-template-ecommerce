@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class UploaderImpl implements Uploader{
     @Override
     public List<String> sendToCloud(List<MultipartFile> files) {
-        return files.stream().map(m -> m.getOriginalFilename() + ".com")
-                .collect(Collectors.toList());
+        return files.stream().filter(f -> f.getOriginalFilename().length() > 1)
+                .map(m -> m.getOriginalFilename() + ".com").collect(Collectors.toList());
     }
 }
