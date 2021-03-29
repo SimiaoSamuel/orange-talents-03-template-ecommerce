@@ -8,6 +8,7 @@ import com.treino.mercadolivre.usuario.Usuario;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,10 +43,14 @@ public class Produto {
     private LocalDateTime instanteCadastro = LocalDateTime.now().withNano(0);
 
     @OneToMany
-    private List<Foto> fotos;
+    private List<Foto> fotos = new ArrayList<>();
 
     public void setFotos(List<Foto> fotos) {
         this.fotos.addAll(fotos);
+    }
+
+    public List<Foto> getFotos() {
+        return fotos;
     }
 
     public Integer getId() {
