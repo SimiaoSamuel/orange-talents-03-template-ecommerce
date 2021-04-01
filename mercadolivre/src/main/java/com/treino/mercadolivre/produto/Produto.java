@@ -49,6 +49,10 @@ public class Produto {
         this.fotos.addAll(fotos);
     }
 
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
     public List<Foto> getFotos() {
         return fotos;
     }

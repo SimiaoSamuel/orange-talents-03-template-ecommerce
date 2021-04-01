@@ -42,7 +42,7 @@ public class PerguntaController {
 
         Pergunta pergunta = perguntaRequest.toPergunta(usuario, produto);
         perguntaRepository.save(pergunta);
-        emailProvider.sendEmailTo(produto, pergunta);
+        emailProvider.sendEmail(produto, pergunta);
         PerguntaResponse perguntaResponse = new PerguntaResponse(pergunta);
 
         return ResponseEntity.ok(perguntaResponse);
