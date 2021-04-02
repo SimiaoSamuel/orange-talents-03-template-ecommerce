@@ -20,4 +20,16 @@ public class EmailImpl implements EmailProvider{
         System.out.println(compra.getComprador().getLogin() + " quer comprar o seu produto: "
                 + compra.getProduto().getNome() + ", senhor " + compra.getProduto().getUsuario().getLogin());
     }
+
+    @Override
+    public void sendEmailFinishBuy(Compra compra) {
+        System.out.println("Compra do produto: " + compra.getProduto().getNome() + " finalizada sr(a). "
+                + compra.getComprador().getLogin());
+    }
+
+    @Override
+    public void sendEmailWhenBuyFail(Compra compra) {
+        System.out.println("Compra do produto: " + compra.getProduto().getNome() + " falhou sr(a). "
+                + compra.getComprador().getLogin());
+    }
 }

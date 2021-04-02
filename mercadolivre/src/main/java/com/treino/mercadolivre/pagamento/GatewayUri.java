@@ -6,6 +6,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public interface Gateway {
-    URI build(Compra compra) throws URISyntaxException;
+public interface GatewayUri {
+    URI build(UriComponentsBuilder uriBuilder,Compra compra) throws URISyntaxException;
+    String name();
 }

@@ -36,7 +36,8 @@ public class CompraController {
     @PostMapping
     public ResponseEntity<CompraResponse> efetuarCompra(@PathVariable Integer id,
                                                         @RequestBody @Valid CompraRequest compraRequest,
-                                                        @AuthenticationPrincipal Usuario comprador) throws IOException, URISyntaxException {
+                                                        @AuthenticationPrincipal Usuario comprador,
+                                                        UriComponentsBuilder uriComponentsBuilder) throws IOException, URISyntaxException {
         Optional<Produto> produtoOptional = produtoRepository.findById(id);
 
         if (produtoOptional.isEmpty())
@@ -48,7 +49,7 @@ public class CompraController {
         compraRepository.save(compra);
         produtoRepository.save(compra.getProduto());
         email.sendEmail(compra);
-        URI uriBuild = compra.getPagamento().getGateway(compra);
+        URI uriBuild = compra.getPagamento().getGateway(uriComponentsBuilder,compra);
 
         CompraResponse compraResponse = new CompraResponse(compra);
 

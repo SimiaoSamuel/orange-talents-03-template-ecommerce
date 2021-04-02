@@ -6,9 +6,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class PayPalGateway implements Gateway{
+public class PayPalGateway implements GatewayUri {
     @Override
-    public URI build(Compra compra) throws URISyntaxException {
-        return new URI("http://www.paypal?buyerId="+compra.getId()+"&redirectUrl=");
+    public URI build(UriComponentsBuilder uriBuilder, Compra compra) throws URISyntaxException {
+        return uriBuilder.path("/retorno-paypal/{id}").buildAndExpand(compra.getId()).toUri();
+    }
+
+    @Override
+    public String name() {
+        return "paypal";
     }
 }

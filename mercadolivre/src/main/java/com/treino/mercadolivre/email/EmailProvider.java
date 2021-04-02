@@ -8,4 +8,6 @@ import com.treino.mercadolivre.usuario.Usuario;
 public interface EmailProvider {
     void sendEmail(Produto produto, Pergunta pergunta);
     void sendEmail(Compra compra);
+    void sendEmailFinishBuy(Compra compra);
+    void sendEmailWhenBuyFail(Compra compra);
 }
